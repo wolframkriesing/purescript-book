@@ -267,7 +267,7 @@ Let's try out our new `diagonal` function in PSCi:
 You can also use PSCi to define functions:
 
 ```text
-> let double x = x * 2
+> double x = x * 2
 
 > double 10
 20
