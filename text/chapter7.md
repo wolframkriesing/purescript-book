@@ -378,7 +378,7 @@ Person
                 , number: "555-555-5555"
                 }
             , PhoneNumber
-                { type: CellPghone
+                { type: CellPhone
                 , number: "555-555-0000"
                 }
             ]
