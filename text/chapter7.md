@@ -239,9 +239,9 @@ Now we can lift over `Either String`, providing an appropriate error message for
 ```text
 > :paste
 … fullNameEither first middle last =
-… fullName <$> (first  `withError` "First name was missing")
-…          <*> (middle `withError` "Middle name was missing")
-…          <*> (last   `withError` "Last name was missing")
+…   fullName <$> (first  `withError` "First name was missing")
+…            <*> (middle `withError` "Middle name was missing")
+…            <*> (last   `withError` "Last name was missing")
 … ^D
 
 > :type fullNameEither
@@ -558,7 +558,7 @@ In general, `traverse` walks over the elements of a data structure, performing c
 The type signature for `Traversable`'s other function `sequence` might look more familiar:
 
 ```haskell
-sequence :: forall a f. Applicative m => t (f a) -> f (t a)
+sequence :: forall a f. Applicative f => t (f a) -> f (t a)
 ```
 
 In fact, the `combineList` function that we wrote earlier is just a special case of the `sequence` function from the `Traversable` type class. Setting `t` to be the type constructor `List`, we recover the type of the `combineList` function:
