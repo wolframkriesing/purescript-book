@@ -137,8 +137,8 @@ The first pattern only matches arrays with five elements, whose first and second
 
 ```text
 > :paste
-… let takeFive [0, 1, a, b, _] = a * b
-…     takeFive _ = 0
+… takeFive [0, 1, a, b, _] = a * b
+… takeFive _ = 0
 … ^D
 
 > takeFive [0, 1, 2, 3, 4]
@@ -436,7 +436,7 @@ showShape :: Shape -> String
 showShape (Circle c r)      = ...
 showShape (Rectangle c w h) = ...
 showShape (Line start end)  = ...
-showShape (Text loc text) = ...
+showShape (Text p text) = ...
 ```
 
 Each constructor can be used as a pattern, and the arguments to the constructor can themselves be bound using patterns of their own. Consider the first case of `showShape`: if the `Shape` matches the `Circle` constructor, then we bring the arguments of `Circle` (center and radius) into scope using two variable patterns, `c` and `r`. The other cases are similar.
@@ -546,12 +546,12 @@ bounds :: Picture -> Bounds
 bounds = foldl combine emptyBounds
   where
     combine :: Bounds -> Shape -> Bounds
-    combine b shape = shapeBounds shape \/ b
+    combine b shape = union (shapeBounds shape) b
 ```
 
 In the base case, we need to find the smallest bounding rectangle of an empty `Picture`, and the empty bounding rectangle defined by `emptyBounds` suffices.
 
-The accumulating function `combine` is defined in a `where` block. `combine` takes a bounding rectangle computed from `foldl`'s recursive call, and the next `Shape` in the array, and uses an infix operator alias `\/` to compute the union of the two bounding rectangles. The `shapeBounds` function computes the bounds of a single shape using pattern matching.
+The accumulating function `combine` is defined in a `where` block. `combine` takes a bounding rectangle computed from `foldl`'s recursive call, and the next `Shape` in the array, and uses the `union` function to compute the union of the two bounding rectangles. The `shapeBounds` function computes the bounds of a single shape using pattern matching.
 
 X> ## Exercises
 X>

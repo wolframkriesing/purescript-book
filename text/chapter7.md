@@ -227,8 +227,8 @@ Instead of lifting over `Maybe`, we can lift over `Either String`, which allows 
 
 ```text
 > :paste
-… let withError Nothing  err = Left err
-…     withError (Just a) _   = Right a
+… withError Nothing  err = Left err
+… withError (Just a) _   = Right a
 … ^D
 ```
 
@@ -238,10 +238,10 @@ Now we can lift over `Either String`, providing an appropriate error message for
 
 ```text
 > :paste
-… let fullNameEither first middle last =
-…     fullName <$> (first  `withError` "First name was missing")
-…              <*> (middle `withError` "Middle name was missing")
-…              <*> (last   `withError` "Last name was missing")
+… fullNameEither first middle last =
+… fullName <$> (first  `withError` "First name was missing")
+…          <*> (middle `withError` "Middle name was missing")
+…          <*> (last   `withError` "Last name was missing")
 … ^D
 
 > :type fullNameEither
