@@ -327,6 +327,12 @@ showCompare a1 a2 =
   show a1 <> " is equal to " <> show a2
 ```
 
+Note that multiple constraints can be specified by using the `=>` symbol multiple times, just like we specify curried functions
+of multiple arguments. But remember not to confuse the two symbols:
+
+- `a -> b` denotes the type of functions from _type_ `a` to _type_ `b`, whereas
+- `a => b` applies the _constraint_ `a` to the type `b`.
+
 The PureScript compiler will try to infer constrained types when a type annotation is not provided. This can be useful if we want to use the most general type possible for a function.
 
 To see this, try using one of the standard type classes like `Semiring` in PSCi:
@@ -381,7 +387,15 @@ instance showArray :: Show a => Show (Array a) where
   ...
 ```
 
-This type class instance is provided in the `purescript-prelude` library.
+If a type class instance depends on multiple other instances, those instances should be grouped in parentheses and separated by
+commas on the left hand side of the `=>` symbol:
+
+```haskell
+instance showEither :: (Show a, Show b) => Show (Either a b) where
+  ...
+```
+
+These two type class instances are provided in the `purescript-prelude` library.
 
 When the program is compiled, the correct type class instance for `Show` is chosen based on the inferred type of the argument to `show`. The selected instance might depend on many such instance relationships, but this complexity is not exposed to the developer.
 
@@ -567,6 +581,7 @@ Another reason to define a superclass relationship is in the case where there is
 
 X> ## Exercises
 X>
+X> 1. (Medium) Define a partial function which finds the maximum of a non-empty array of integers. Your function should have type `Partial => Array Int -> Int`. Test out your function in PSCi using `unsafePartial`. _Hint_: Use the `maximum` function from `Data.Foldable`.
 X> 1. (Medium) The `Action` class is a multi-parameter type class which defines an action of one type on another:
 X>
 X>     ```haskell
@@ -574,29 +589,39 @@ X>     class Monoid m <= Action m a where
 X>       act :: m -> a -> a
 X>     ```
 X>           
-X>     An _action_ is a function which describes how a monoid can be used to modify a value of another type. We expect the action to respect the concatenation operator of the monoid. For example, the monoid of natural numbers under addition (defined in the `Data.Monoid.Additive` module) _acts_ on strings by repeating a string some number of times:
-X>  
-X>     ```haskell
-X>     import Data.Monoid.Additive (Additive(..))
+X>     An _action_ is a function which describes how monoidal values can be used to modify a value of another type. There are two laws for the `Action` type class:
 X>
-X>     instance repeatAction :: Action (Additive Int) String where
-X>       act (Additive n) s = repeat n s where
-X>         repeat 0 _ = ""
-X>         repeat m s = s <> repeat (m - 1) s
+X>     - `act mempty a = a`
+X>     - `act (m1 <> m2) a = act m1 (act m2 a)`
+X>
+X>     That is, the action respects the operations defined by the `Monoid` class.
+X>        
+X>     For example, the natural numbers form a monoid under multiplication:
+X>
+X>     ```haskell
+X>     newtype Multiply = Multiply Int
+X>
+X>     instance semigroupMultiply :: Semigroup Multiply where
+X>       append (Multiply n) (Multiply m) = Multiply (n * m)
+X>
+X>     instance monoidMultiply :: Monoid Multiply where
+X>       mempty = Multiply 1
 X>     ```
 X>
-X>     Note that `act (Additive 2) s` is equal to the combination `act (Additive 1) s <> act (Additive 1) s`, and `Additive 1 <> Additive 1 = Additive 2`.
-X>   
-X>     Write down a reasonable set of laws which describe how the `Action` class should interact with the `Monoid` class. _Hint_: how do we expect `mempty` to act on elements? What about `append`?
-X> 1. (Medium) Write an instance `Action m a => Action m (Array a)`, where the action on arrays is defined by acting on the elements independently.
-X> 1. (Difficult) Should the arguments of the multi-parameter type class `Action` be related by some functional dependency? Why or why not?
+X>     This monoid acts on strings by repeating an input string some number of times. Write an instance which implements this action:
+X>
+X>     ```haskell
+X>     instance repeatAction :: Action Multiply String
+X>     ```
+X>
+X>     Does this instance satisfy the laws listed above?
+X> 1. (Medium) Write an instance `Action m a => Action m (Array a)`, where the action on arrays is defined by acting on each array element independently.
 X> 1. (Difficult) Given the following newtype, write an instance for `Action m (Self m)`, where the monoid `m` acts on itself using `append`:
 X>
 X>     ```haskell
 X>     newtype Self m = Self m
 X>     ```
-X>
-X> 1. (Medium) Define a partial function which finds the maximum of a non-empty array of integers. Your function should have type `Partial => Array Int -> Int`. Test out your function in PSCi using `unsafePartial`. _Hint_: Use the `maximum` function from `Data.Foldable`.
+X> 1. (Difficult) Should the arguments of the multi-parameter type class `Action` be related by some functional dependency? Why or why not?
 
 ## A Type Class for Hashes
 
