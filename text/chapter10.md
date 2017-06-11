@@ -477,7 +477,7 @@ Notice that the `random` function is represented at runtime as a function of no 
 As a slightly more interesting example, consider the `log` function defined by the `Control.Monad.Eff.Console` module in the `purescript-console` package. The `log` function has the following type:
 
 ```haskell
-foreign import log ::: forall eff. String -> Eff (console :: CONSOLE | eff) Unit
+foreign import log :: forall eff. String -> Eff (console :: CONSOLE | eff) Unit
 ```
 
 And here is its definition:
