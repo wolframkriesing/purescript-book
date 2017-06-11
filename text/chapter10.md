@@ -704,7 +704,7 @@ To be able to parse the generated JSON document, we need to be able to read obje
 
 ```haskell
 (!) :: Index i => Foreign -> i -> F Foreign
-readProp :: forall a i. (IsForeign a, Index i) => i -> Foreign -> F a
+readProp :: forall a i. IsForeign a => Index i => i -> Foreign -> F a
 ```
 
 The type class `Index` represents those types which can be used to index properties on foreign values. Instances are provided for `String` (for accessing object properties) and `Int` (for accessing array elements).

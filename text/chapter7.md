@@ -201,7 +201,7 @@ Here is a simple example function defined in PSCi, which joins three names to fo
 ```text
 > import Prelude
 
-> let fullName first middle last = last <> ", " <> first <> " " <> middle
+> fullName first middle last = last <> ", " <> first <> " " <> middle
 
 > fullName "Phillip" "A" "Freeman"
 Freeman, Phillip A

@@ -169,7 +169,7 @@ showPerson { first: x, last: y } = y <> ", " <> x
 Record patterns provide a good example of an interesting feature of the PureScript type system: _row polymorphism_. Suppose we had defined `showPerson` without a type signature above. What would its inferred type have been? Interestingly, it is not the same as the type we gave:
 
 ```text
-> let showPerson { first: x, last: y } = y <> ", " <> x
+> showPerson { first: x, last: y } = y <> ", " <> x
 
 > :type showPerson
 forall r. { first :: String, last :: String | r } -> String
@@ -200,7 +200,7 @@ This function is polymorphic in the _row_ `r` of record fields, hence the name _
 Note that we could have also written
 
 ```haskell
-> let showPerson p = p.last <> ", " <> p.first
+> showPerson p = p.last <> ", " <> p.first
 ```
 
 and PSCi would have inferred the same type.

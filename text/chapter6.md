@@ -318,7 +318,7 @@ This type says that we can call `threeAreEqual` with any choice of type `a`, as 
 Constrained types can contain several type class instances, and the types of the instances are not restricted to simple type variables. Here is another example which uses `Ord` and `Show` instances to compare two values:
 
 ```haskell
-showCompare :: forall a. (Ord a, Show a) => a -> a -> String
+showCompare :: forall a. Ord a => Show a => a -> a -> String
 showCompare a1 a2 | a1 < a2 =
   show a1 <> " is less than " <> show a2
 showCompare a1 a2 | a1 > a2 =
@@ -452,7 +452,7 @@ We can write functions which work over arbitrary streams. For example, here is a
 import Prelude
 import Data.Monoid (class Monoid, mempty)
 
-foldStream :: forall l e m. (Stream l e, Monoid m) => (e -> m) -> l -> m
+foldStream :: forall l e m. Stream l e => Monoid m => (e -> m) -> l -> m
 foldStream f list =
   case uncons list of
     Nothing -> mempty
