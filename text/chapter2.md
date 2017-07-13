@@ -10,7 +10,7 @@ Our first project will be a very simple PureScript library, which will provide a
 
 Here are the tools we will be using to set up our PureScript development environment:
 
-- [`psc`](http://purescript.org) - The PureScript compiler itself.
+- [`purs`](http://purescript.org) - The PureScript tool (including compiler).
 - [`npm`](http://npmjs.org) - The Node Package Manager, which will allow us to install the rest of our development tools.
 - [Pulp](https://github.com/bodil/pulp) - A command-line tool which automates many of the tasks associated with managing PureScript projects.
 
@@ -23,7 +23,7 @@ The recommended approach to installing the PureScript compiler is to download a 
 You should verify that the PureScript compiler executables are available on your path. Try running the PureScript compiler on the command line to verify this:
 
 ```text
-$ psc
+$ purs
 ```
 
 Other options for installing the PureScript compiler include:

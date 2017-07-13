@@ -296,9 +296,9 @@ exports.encodeURIComponent = encodeURIComponent;
 
 Pulp will find `.js` files in the `src` directory, and provide them to the compiler as foreign Javascript modules.
 
-Javascript functions and values are exported from foreign Javascript modules by assigning them to the `exports` object just like a regular CommonJS module. The `psc` compiler treats this module like a regular CommonJS module, and simply adds it as a dependency to the compiled
-PureScript module. However, when bundling code for the browser with `psc-bundle` or `pulp build -O --to`, it is very important to follow the
-pattern above, assigning exports to the `exports` object using a property assignment. This is because `psc-bundle` recognizes this format,
+Javascript functions and values are exported from foreign Javascript modules by assigning them to the `exports` object just like a regular CommonJS module. The `purs compile` treats this module like a regular CommonJS module, and simply adds it as a dependency to the compiled
+PureScript module. However, when bundling code for the browser with `purs bundle` or `pulp build -O --to`, it is very important to follow the
+pattern above, assigning exports to the `exports` object using a property assignment. This is because `purs bundle` recognizes this format,
 allowing unused Javascript exports to be removed from bundled code.
 
 With these two pieces in place, we can now use the `encodeURIComponent` function from PureScript like any function written in PureScript.
